@@ -1,53 +1,31 @@
 /**
- * @file   mofron-comp-checklist/index.js
- * @brief checkbox list component for mofron
- * @author simpart
+ * @file mofron-comp-radiolist/index.js
+ * @brief radiobutton list component for mofron
+ * @license MIT
  */
-const mf       = require("mofron");
 const FormItem = require("mofron-comp-formitem");
 const Radio    = require("mofron-comp-radio");
+const comutl   = mofron.util.common;
 
-mf.comp.RadioList = class extends FormItem {
+module.exports = class extends FormItem {
     
     /**
      * constructor
      * 
-     * @param (string) 'text' parameter
+     * @param (mixed) 'text' parameter
+     *                key-value: component config
+     * @short text
      * @type private
      */
-    constructor (po) {
+    constructor (prm) {
         try {
             super();
             this.name("RadioList");
-            this.prmMap("text");
-            this.prmOpt(po);
-        } catch (e) {
-            console.error(e.stack);
-            throw e;
-        }
-    }
-    
-    /**
-     * set focus status
-     *
-     * @type private 
-     */
-    afterRender () {}
-    
-    /**
-     * set chenge event
-     *
-     * @type private 
-     */
-    beforeRender () {
-        try {
-            super.beforeRender();
-            let evt = this.changeEvent();
-            for (let eidx in evt) {
-                let chk_lst = this.getRadio();
-                for (let cidx in chk_lst) {
-                    chk_lst[cidx].changeEvent(evt[eidx][0], evt[eidx][1]);
-                }
+            this.shortForm("text");
+            
+	    this.style({ "display" : "flex" });
+	    if (undefined !== prm) {
+                this.config(prm);
             }
         } catch (e) {
             console.error(e.stack);
@@ -60,6 +38,8 @@ mf.comp.RadioList = class extends FormItem {
      *
      * @param (number) index: get index radio button
      *                 undefined: get all radio button
+     * @return (mixed) mofron-comp-radio: radio component (specified index)
+     *                 array: radio component list
      * @type private
      */
     getRadio (idx) {
@@ -68,7 +48,7 @@ mf.comp.RadioList = class extends FormItem {
             if (undefined === idx) {
                 let ret = [];
                 for (let cidx in chd) {
-                    if (true === mf.func.isInclude(chd[cidx], "Radio")) {
+                    if (true === comutl.isinc(chd[cidx], "Radio")) {
                         ret.push(chd[cidx]);
                     }
                 }
@@ -84,9 +64,11 @@ mf.comp.RadioList = class extends FormItem {
     /**
      * radio text contents
      *
-     * @param (string/mofron-comp-text) radio text component
-     * @return (string/mofron-comp-text) radio text component
-     * @type tag parameter
+     * @param (mixed) array: radio contents list 
+     *                string: radio text string
+     *                mofron-comp-text: radio text component
+     * @return (array) radio text component list
+     * @type parameter
      */
     text (prm) {
         try {
@@ -106,7 +88,7 @@ mf.comp.RadioList = class extends FormItem {
                 return;
             }
             let radio = new Radio(prm);
-            radio.target().attr({ name : this.getId() });
+            radio.childDom().attrs({ name : this.id() });
             this.child(radio);
         } catch (e) {
             console.error(e.stack);
@@ -115,30 +97,53 @@ mf.comp.RadioList = class extends FormItem {
     }
     
     /**
-     * select target radio button
+     * radio button text contents setter/getter
+     * same as 'text' parameter
+     *
+     * @param (mixed) string: text contents string
+     *                mofron-comp-text: text contents component
+     *                array: checkbox text contents list
+     *                undefined: call as getter
+     * @return (array) checkbox text contents list
+     * @type parameter
+     */
+    radio (prm) {
+        try {
+            return this.text(prm);
+	} catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+    
+    /**
+     * select target radio button setter/getter
      *
      * @param (boolean) true: select
      *                  false: unselect
+     *                  undefined: call as getter
      * @param (number) select target index
-     * @return (boolean/number) select status/selected index
-     * @type tag parameter
+     * @return (mixed) number: selected index
+     *                 null: not select
+     * @type parameter
      */
     select (flg, idx) {
         try {
-            let chk_lst = this.getRadio();
-            if ("number" === typeof idx) {
-                if (undefined === chk_lst[idx]) {
-                    throw new Error("invalid index : " + idx);
-                }
-                return (undefined === flg) ? chk_lst[idx].select() : chk_lst[idx].select(flg);
-            }
-            let ret     = [];
-            for (let cidx in chk_lst) {
-                if (true === chk_lst[cidx].select()) {
-                    return parseInt(cidx);
-                }
-            }
-            return null;
+            let rdo_lst = this.getRadio();
+            if (undefined === flg) {
+                /* getter */
+		for (let ridx in rdo_lst) {
+                    if (true === rdo_lst[ridx].select()) {
+                        return parseInt(ridx);
+		    }
+		}
+		return null;
+	    }
+            /* setter */
+            if (undefined === rdo_lst[idx]) {
+	        throw new Error("invalid index : " + idx);
+	    }
+	    rdo_lst[idx].select(flg);
         } catch (e) {
             console.error(e.stack);
             throw e;
@@ -148,61 +153,68 @@ mf.comp.RadioList = class extends FormItem {
     /**
      * item value
      *
-     * @param (boolean) same as "select"
-     * @param (number) same as "select"
-     * @return (array) select status
-     * @type tag parameter
+     * @param (boolean) same as 'select' parameter
+     * @param (number) same as 'select' parameter
+     * @return (mixed) same as 'select' parameter
+     * @type parameter
      */
     value (prm, idx) {
-        try { return this.select(prm, idx); } catch (e) {
+        try {
+	    return this.select(prm, idx);
+	} catch (e) {
             console.error(e.stack);
             throw e;
         }
     }
     
     /**
-     * focus check box
+     * focus check box setter/getter
      *
      * @param (boolean) true: focus target check box
      *                  false: defocus target check box
+     *                  undefined: call as getter
      * @param (number) target index
-     * @return focus status of target index
+     * @return (boolean) focus status of target index
      * @type private
      */
-    //focus (prm, idx) {
-    //    try {
-    //        let chk = this.getCheckBox(idx);
-    //        if ((null === chk) || (true === Array.isArray(chk))) {
-    //            throw new Error("invalid index : " + idx);
-    //        }
-    //        return chk[idx].focus(prm);
-    //    } catch (e) {
-    //        console.error(e.stack);
-    //        throw e;
-    //    }
-    //}
+    focus (prm, idx) {
+        try {
+            let chk = this.getRadio();
+            if ((undefined === prm) && (undefined === idx)) {
+                /* getter */
+                let ret = [];
+                for (let cidx in chk) {
+                    ret.push(chk[cidx].focus());
+                }
+                return ret;
+            }
+            if (undefined === idx) {
+                return;
+            }
+            return chk[idx].focus(prm);
+        } catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
     
     /**
      * check box enable/disable status
      * 
      * @param (boolean) true: change enable mode (default)
      *                  false: change disable mode
-     * @param (number/null) target index / get all status
+     *                  undefined: call as getter
      * @return (boolean) current item status
-     * @type tag parameter
+     * @type parameter
      */
-    status (prm, idx) {
+    status (prm) {
         try {
             let chk_lst = this.getRadio();
-            if ("number" === typeof idx) {
-                if (undefined === chk_lst[idx]) {
-                    throw new Error("invalid index : " + idx);
-                }
-                return (undefined === flg) ? chk_lst[idx].status() : chk_lst[idx].status(flg);
-            }
-            let ret     = [];
+            let ret     = chk_lst[0].status(prm);
             for (let cidx in chk_lst) {
-                ret.push(chk_lst[cidx].status(flg));
+                if (ret !==  chk_lst[cidx].status()) {
+                    console.warn("mismatched check box status:" + cidx);
+                }
             }
             return ret;
         } catch (e) {
@@ -210,41 +222,44 @@ mf.comp.RadioList = class extends FormItem {
             throw e;
         }
     }
-    
+
     /**
      * unselect all radio button
      *
      * @type function
      */
     clear () {
-        try { this.select(false); } catch (e) {
+        try {
+	    this.select(false);
+	} catch (e) {
             console.error(e.stack);
             throw e;
         }
     }
     
+    /**
+     * change event function setter/getter
+     *
+     * @param (function) change event
+     *                   undefined: call as getter
+     * @param (mix) event parameter
+     * @return (array) event list
+     * @type private
+     */
     changeEvent (fnc, prm) {
         try {
             if (undefined === fnc) {
                 return super.changeEvent();
             }
-            let rdi_lst = this;
-            let set_fnc = (p1,p2,p3) => {
-                let lst = rdi_lst.getRadio();
-                for (let lidx in lst) {
-                    if (lst[lidx].getId() === p1.getId()) {
-                        fnc(rdi_lst, [parseInt(lidx),p2], p3);
-                        return;
-                    }
-                }
-                fnc(rdi_lst, [undefined,p2],p3);
+	    super.changeEvent(fnc,prm);
+            let chk = this.getRadio();
+            for (let cidx in chk) {
+                chk[cidx].changeEvent(fnc, prm);
             }
-            super.changeEvent(set_fnc, prm);
         } catch (e) {
             console.error(e.stack);
             throw e;
         }
     }
 }
-module.exports = mf.comp.RadioList;
 /* end of file */

@@ -1,42 +1,46 @@
 # mofron-comp-radiolist
 [mofron](https://mofron.github.io/mofron/) is module based frontend framework.
 
-radio list component for [mofron](https://mofron.github.io/mofron/).
+radiobutton list component for mofron
+
 
 # Install
-
-```:bash
+```
 npm install mofron mofron-comp-radiolist
 ```
 
 # Sample
 ```html
 <require>
-    <tag module="mofron-comp-radiolist">RadioList</tag>
+    <tag load="mofron-comp-radiolist">RadioList</tag>
+    <tag load="mofron-layout-margin">Margin</tag>
 </require>
 
-<script run=init>
-let chg_evt = (p1,p2,p3) => { console.log(p2); }
-</script>
-
-<RadioList changeEvent=chg_evt>
-    <text>Radio 1</text>
-    <text>Radio 2</text>
-    <text>Radio 3</text>
-</Radiolist>
+<RadioList layout=Margin:("left","0.2rem")>
+    <radio>radio_1</radio>
+    <radio>radio_2</radio>
+</RadioList>
 ```
 
 # Parameter
 
-| Simple<br>Param | Parameter Name     | Type                               |    Description                         |
-|:---------------:|:-------------------|:-----------------------------------|:---------------------------------------|
-|         ◯       | text               | string/mofron-comp-text/array      | radio text contents                    |
-|                 | select             | boolean                            | true: select                           |
-|                 |                    |                                    | false: unselect                        |
-|                 |                    | number                             | target index                           |
-|                 | value              | boolean                            | same as 'select'                       |
-|                 |                    | number                             | same as 'select'                       |
-|                 | status             | boolean                            | true: change enable mode (default)     |
-|                 |                    |                                    | false: change disable mode             |
-|                 |                    | number/undefined                   | target index / all targets             |
+| Short<br>Form | Parameter Name | Type | Description |
+|:-------------:|:---------------|:-----|:------------|
+| ◯  | text | mixed | array: radio contents list  |
+| | | | string: radio text string |
+| | | | mofron-comp-text: radio text component |
+| | radio | mixed | string: text contents string |
+| | | | mofron-comp-text: text contents component |
+| | | | array: checkbox text contents list |
+| | | | undefined: call as getter |
+| | select | boolean | true: select |
+| | | | false: unselect |
+| | | | undefined: call as getter |
+| | | number | select target index |
+| | value | boolean | same as 'select' parameter |
+| | | number | same as 'select' parameter |
+| | status | boolean | true: change enable mode (default) |
+| | | | false: change disable mode |
+| | | | undefined: call as getter |
+| | clear | ||
 
