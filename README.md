@@ -31,7 +31,7 @@ npm install mofron mofron-comp-radiolist
 | | | | mofron-comp-text: radio text component |
 | | radio | mixed | string: text contents string |
 | | | | mofron-comp-text: text contents component |
-| | | | array: checkbox text contents list |
+| | | | array: radio-button text contents list |
 | | | | undefined: call as getter |
 | | select | boolean | true: select |
 | | | | false: unselect |

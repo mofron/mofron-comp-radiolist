@@ -1,6 +1,6 @@
 /**
- * @file   mofron-comp-checklist/index.js
- * @brief checkbox list component for mofron
+ * @file mofron-comp-radiolist/index.js
+ * @brief radiobutton list component for mofron
  * @license MIT
  */
 const FormItem = require("mofron-comp-formitem");
@@ -32,7 +32,7 @@ module.exports = class extends FormItem {
         }
     }
     
-    /**
+   /**
      * initialize dom contents
      * 
      * @type private
@@ -116,9 +116,9 @@ module.exports = class extends FormItem {
      *
      * @param (mixed) string: text contents string
      *                mofron-comp-text: text contents component
-     *                array: checkbox text contents list
+     *                array: radio-button text contents list
      *                undefined: call as getter
-     * @return (array) checkbox text contents list
+     * @return (array) radio-button text contents list
      * @type parameter
      */
     radio (prm) {
@@ -182,10 +182,10 @@ module.exports = class extends FormItem {
     }
     
     /**
-     * focus check box setter/getter
+     * focus radio-button setter/getter
      *
-     * @param (boolean) true: focus target check box
-     *                  false: defocus target check box
+     * @param (boolean) true: focus target radio-button
+     *                  false: defocus target radio-button
      *                  undefined: call as getter
      * @param (number) target index
      * @return (boolean) focus status of target index
@@ -213,7 +213,7 @@ module.exports = class extends FormItem {
     }
     
     /**
-     * check box enable/disable status
+     * radio-button enable/disable status
      * 
      * @param (boolean) true: change enable mode (default)
      *                  false: change disable mode
@@ -227,7 +227,7 @@ module.exports = class extends FormItem {
             let ret     = chk_lst[0].status(prm);
             for (let cidx in chk_lst) {
                 if (ret !==  chk_lst[cidx].status()) {
-                    console.warn("mismatched check box status:" + cidx);
+                    console.warn("mismatched radio-button status:" + cidx);
                 }
             }
             return ret;
