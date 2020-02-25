@@ -1,6 +1,6 @@
 /**
- * @file mofron-comp-radiolist/index.js
- * @brief radiobutton list component for mofron
+ * @file   mofron-comp-checklist/index.js
+ * @brief checkbox list component for mofron
  * @license MIT
  */
 const FormItem = require("mofron-comp-formitem");
@@ -23,7 +23,6 @@ module.exports = class extends FormItem {
             this.name("RadioList");
             this.shortForm("text");
             
-	    this.style({ "display" : "flex" });
 	    if (undefined !== prm) {
                 this.config(prm);
             }
@@ -31,6 +30,21 @@ module.exports = class extends FormItem {
             console.error(e.stack);
             throw e;
         }
+    }
+    
+    /**
+     * initialize dom contents
+     * 
+     * @type private
+     */
+    initDomConts () {
+        try {
+            super.initDomConts();
+	    this.horizon(true);
+	} catch (e) {
+            console.error(e.stack);
+            throw e;
+	}
     }
     
     /**
