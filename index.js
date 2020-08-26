@@ -20,7 +20,7 @@ module.exports = class extends FormItem {
     constructor (prm) {
         try {
             super();
-            this.name("RadioList");
+            this.modname("RadioList");
             this.shortForm("text");
             
 	    if (undefined !== prm) {

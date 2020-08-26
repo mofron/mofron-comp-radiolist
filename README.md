@@ -11,10 +11,10 @@ npm install mofron mofron-comp-radiolist
 
 # Sample
 ```html
-<require>
+<setting>
     <tag load="mofron-comp-radiolist">RadioList</tag>
     <tag load="mofron-layout-margin">Margin</tag>
-</require>
+</setting>
 
 <RadioList layout=Margin:("left","0.2rem")>
     <radio>radio_1</radio>
@@ -43,4 +43,3 @@ npm install mofron mofron-comp-radiolist
 | | | | false: change disable mode |
 | | | | undefined: call as getter |
 | | clear | ||
-
