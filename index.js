@@ -23,6 +23,8 @@ module.exports = class extends FormItem {
             this.modname("RadioList");
             this.shortForm("text");
             
+            this.confmng().add("group", { type: "string" });
+            
 	    if (undefined !== prm) {
                 this.config(prm);
             }
@@ -45,6 +47,19 @@ module.exports = class extends FormItem {
             console.error(e.stack);
             throw e;
 	}
+    }
+
+    beforeRender () {
+        try {
+            super.beforeRender();
+	    let rd = this.getRadio();
+	    for (let ridx in rd) {
+                rd[ridx].childDom().attrs({ "name" : this.group() });
+	    }
+	} catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
     }
     
     /**
@@ -271,6 +286,15 @@ module.exports = class extends FormItem {
                 chk[cidx].changeEvent(fnc, prm);
             }
         } catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+
+    group (prm) {
+        try {
+            return this.confmng("group", prm);
+	} catch (e) {
             console.error(e.stack);
             throw e;
         }
