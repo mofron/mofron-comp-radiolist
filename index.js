@@ -55,7 +55,23 @@ module.exports = class extends FormItem {
 	    let rd = this.getRadio();
 	    for (let ridx in rd) {
                 rd[ridx].childDom().attrs({ "name" : this.group() });
+  
+                rd[ridx].changeEvent((r1,r2,r3) => {
+                    if (true === r2) {
+                        let r_lst = r3.getRadio();
+			for (let lst_idx in r_lst) {
+			    if (r1.id() === r_lst[lst_idx].id()) {
+			        let c_evt = r3.changeEvent();
+				for (let eidx in c_evt) {
+				    c_evt[eidx][0](r3, lst_idx, c_evt[eidx][1]);
+				}
+				break;
+			    }
+			}
+		    }
+		},this);
 	    }
+	    
 	} catch (e) {
             console.error(e.stack);
             throw e;
@@ -266,31 +282,6 @@ module.exports = class extends FormItem {
         }
     }
     
-    /**
-     * change event function setter/getter
-     *
-     * @param (function) change event
-     *                   undefined: call as getter
-     * @param (mix) event parameter
-     * @return (array) event list
-     * @type private
-     */
-    changeEvent (fnc, prm) {
-        try {
-            if (undefined === fnc) {
-                return super.changeEvent();
-            }
-	    super.changeEvent(fnc,prm);
-            let chk = this.getRadio();
-            for (let cidx in chk) {
-                chk[cidx].changeEvent(fnc, prm);
-            }
-        } catch (e) {
-            console.error(e.stack);
-            throw e;
-        }
-    }
-
     group (prm) {
         try {
             return this.confmng("group", prm);

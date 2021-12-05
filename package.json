@@ -1,6 +1,6 @@
 {
   "name": "mofron-comp-radiolist",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "radio button list component for component",
   "main": "index.js",
   "scripts": {
