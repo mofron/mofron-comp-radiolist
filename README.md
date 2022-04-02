@@ -33,10 +33,7 @@ npm install mofron mofron-comp-radiolist
 | | | | mofron-comp-text: text contents component |
 | | | | array: radio-button text contents list |
 | | | | undefined: call as getter |
-| | select | boolean | true: select |
-| | | | false: unselect |
-| | | | undefined: call as getter |
-| | | number | select target index |
+| | select | number | select target index |
 | | value | boolean | same as 'select' parameter |
 | | | number | same as 'select' parameter |
 | | status | boolean | true: change enable mode (default) |

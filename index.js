@@ -164,31 +164,28 @@ module.exports = class extends FormItem {
     /**
      * select target radio button setter/getter
      *
-     * @param (boolean) true: select
-     *                  false: unselect
-     *                  undefined: call as getter
      * @param (number) select target index
      * @return (mixed) number: selected index
      *                 null: not select
      * @type parameter
      */
-    select (flg, idx) {
+    select (idx) {
         try {
-            let rdo_lst = this.getRadio();
-            if (undefined === flg) {
+	    let rdo_lst = this.getRadio();
+            if (undefined === idx) {
                 /* getter */
 		for (let ridx in rdo_lst) {
-                    if (true === rdo_lst[ridx].select()) {
-                        return parseInt(ridx);
+		    if (true === rdo_lst[ridx].select()) {
+		        return parseInt(ridx);
 		    }
-		}
+                }
 		return null;
 	    }
             /* setter */
-            if (undefined === rdo_lst[idx]) {
+	    if (undefined === rdo_lst[idx]) {
 	        throw new Error("invalid index : " + idx);
 	    }
-	    rdo_lst[idx].select(flg);
+            rdo_lst[idx].select(true);
         } catch (e) {
             console.error(e.stack);
             throw e;
