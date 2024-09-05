@@ -60,6 +60,20 @@ module.exports = class extends FormItem {
             let radio_lst = this.getRadio();
             for (let ridx in radio_lst) {
                 radio_lst[ridx].group(this.group());
+                radio_lst[ridx].changeEvent((r1,r2,r3) => {
+                    if (true === r2) {
+                        let r_lst = r3.getRadio();
+                        for (let lst_idx in r_lst) {
+                            if (r1.id() === r_lst[lst_idx].id()) {
+                                let c_evt = r3.changeEvent();
+                                for (let eidx in c_evt) {
+                                    c_evt[eidx][0](r3, lst_idx, c_evt[eidx][1]);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                },this);
             }
 	} catch (e) {
             console.error(e.stack);
